@@ -1,0 +1,26 @@
+on:
+  schedule:
+  - cron:  "04 */4 * * *"
+  workflow_dispatch:
+
+jobs:
+  repo-sync:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        persist-credentials: false
+    - name: repo-sync
+      uses: repo-sync/github-sync@v2
+      with:
+        source_repo: "kubernetes-csi/csi-proxy"
+        source_branch: "*"
+        destination_branch: "*"
+        sync_tags: "true"
+        github_token: ${{ secrets.PAT }}
+    - name: Clone Github Releases
+      uses: andrewthetechie/gha-clone-releases@v1.3.4
+      with:
+        token: ${{ secrets.PAT }}
+        src_repo: "kubernetes-csi/csi-proxy"
+        target: "master"
