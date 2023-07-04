@@ -1,3 +1,4 @@
+name: Buiild Windows Release
 on:
   workflow_dispatch:
 
@@ -49,9 +50,16 @@ jobs:
       uses: cardinalby/git-get-release-action@1.2.2
       with:
         tag: latest
+    - name: Zip Release
+      uses: TheDoctor0/zip-release@0.6.2
+      with:
+        type: 'zip'
+        filename: 'csi-proxy.zip'
+        directory: bin
     - name: Upload files to GitHub release
       uses: svenstaro/upload-release-action@2.3.0
       with:
-        file: 'bin/csi-proxy.exe'
+        file: 'bin/csi-proxy.zip'
         tag: latest
         overwrite: 'true'
+  
