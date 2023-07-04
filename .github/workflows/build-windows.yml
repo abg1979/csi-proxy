@@ -35,11 +35,13 @@ jobs:
           mingw-w64-x86_64-make
           mingw-w64-x86_64-gpgme
           mingw-w64-x86_64-pkg-config
+          git
     - name: Build CSI Proxy
       shell: msys2 {0}
       run: |
         export PATH=${PATH}:`cygpath ${MY_GO_INSTALL_DIR}`
         mingw32-make.exe build
+        find bin
     - name: Get current release for dispatch
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}    
