@@ -47,17 +47,17 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}    
       id: current_release_dispatch
-      uses: cardinalby/git-get-release-action@1.2.2
+      uses: cardinalby/git-get-release-action@1.2.4
       with:
         tag: latest
     - name: Zip Release
-      uses: TheDoctor0/zip-release@0.6.2
+      uses: TheDoctor0/zip-release@0.7.1
       with:
         type: 'zip'
         filename: 'csi-proxy.zip'
         directory: bin
     - name: Upload files to GitHub release
-      uses: svenstaro/upload-release-action@2.3.0
+      uses: svenstaro/upload-release-action@2.6.1
       with:
         file: 'bin/csi-proxy.zip'
         tag: latest
