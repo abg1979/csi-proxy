@@ -44,14 +44,11 @@ jobs:
           mingw-w64-x86_64-make
           mingw-w64-x86_64-gpgme
           mingw-w64-x86_64-pkg-config
-    - name: Build Skopeo
+    - name: Build CSI Proxy
       shell: msys2 {0}
       run: |
         export PATH=${PATH}:`cygpath ${MY_GO_INSTALL_DIR}`
-        CC=${MSYSTEM_CHOST}-gcc CXX=${MSYSTEM_CHOST}-g++ mingw32-make.exe build
-        ldd bin/skopeo | grep mingw64 | cut -d ' ' -f 3 | xargs -I{} cp -u {} bin
-        mv bin/skopeo bin/skopeo.exe
-        strip -x bin/skopeo.exe
+        mingw32-make.exe build
     - name: Get current release for dispatch
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}    
@@ -80,15 +77,9 @@ jobs:
       run: |
         $current_release_tag = "${{ steps.current_release_push.outputs.tag_name }}"
         Add-Content -Path $env:GITHUB_ENV "MY_CURRENT_RELEASE_TAG_NAME=$current_release_tag"
-    - name: Zip Release
-      uses: TheDoctor0/zip-release@0.6.2
-      with:
-        type: 'zip'
-        filename: 'skopeo-windows-x86_64-${{ env.MY_CURRENT_RELEASE_TAG_NAME }}.zip'
-        directory: bin
     - name: Upload files to GitHub release
       uses: svenstaro/upload-release-action@2.3.0
       with:
-        file: 'bin/skopeo-windows-x86_64-${{ env.MY_CURRENT_RELEASE_TAG_NAME }}.zip'
+        file: 'bin/csi-proxy.exe'
         tag: ${{ env.MY_CURRENT_RELEASE_TAG_NAME }}
         overwrite: 'true'
