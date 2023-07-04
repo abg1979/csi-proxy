@@ -56,6 +56,10 @@ jobs:
         type: 'zip'
         filename: 'csi-proxy.zip'
         directory: bin
+    - name: Find Go Install Location
+      shell: pwsh
+      run: |
+        Get-ChildItem -Path . -Recurse 
     - name: Upload files to GitHub release
       uses: svenstaro/upload-release-action@2.6.1
       with:
